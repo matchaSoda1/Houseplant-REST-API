@@ -32,8 +32,6 @@ public class WateringLog {
     public WateringLog(){
     }
 
-
-
     public WateringLog(LocalDate dateWatered){
         this.dateWatered = dateWatered;
     }

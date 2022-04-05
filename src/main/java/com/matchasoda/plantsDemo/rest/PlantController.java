@@ -1,6 +1,7 @@
 package com.matchasoda.plantsDemo.rest;
 
 import com.matchasoda.plantsDemo.entity.Plant;
+import com.matchasoda.plantsDemo.entity.WateringLog;
 import com.matchasoda.plantsDemo.entity.WateringRequest;
 import com.matchasoda.plantsDemo.service.PlantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ public class PlantController {
 
     @PostMapping
     public Plant addPlant(@RequestBody Plant plant) {
+        plant.setWateringLog(new WateringLog());
         plantService.savePlant(plant);
         return plant;
 
-        //works!
-        //send request like this, using class variable names NOT mysqltable variable names!
+        //sample request [using class variable names NOT mysql variable names]
         //    {
         //        "name" : "Pilea",
         //        "wateringFrequency" : 7,
@@ -47,37 +48,22 @@ public class PlantController {
         int plantId = wateringRequest.getPlantId();
         LocalDate wateredDate = wateringRequest.getDateWatered();
 
-        Plant plant = plantService.findPlantById(plantId); //eager loading - but maybe shouldnt be because we're only
-        //checking if the plant exists... :/
-
-        if (plant == null) {
-            throw new PlantNotFoundException("Plant with id " + plantId + " not found");
-        }
         return plantService.waterPlant(plantId,wateredDate);
     }
 
-    @PutMapping("water/{plantId}")
+    @PutMapping("waterToday/{plantId}")
     public Plant waterPlant(@PathVariable int plantId){
         Plant plant = plantService.findPlantById(plantId);
-
-        if (plant == null) {
-            throw new PlantNotFoundException("Plant with id " + plantId + " not found");
-        }
-
         return plantService.waterPlant(plantId);
     }
 //
     @DeleteMapping("/{plantId}")
-    public void deletePlant(@PathVariable int plantId){
+    public List<Plant> deletePlant(@PathVariable int plantId){
         plantService.deletePlantById(plantId);
+        return plantService.listAllPlants();
     }
-//
+
     @GetMapping("/toWater")
-//    make it return:
-//    id
-//    name
-//    watering frequency
-//    date watered
     public List<Plant> plantsTowater(){
         return plantService.getPlantsToWater();
     }

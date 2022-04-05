@@ -4,6 +4,7 @@ import com.matchasoda.plantsDemo.dao.PlantRepository;
 import com.matchasoda.plantsDemo.entity.Plant;
 import com.matchasoda.plantsDemo.entity.WateringLog;
 import com.matchasoda.plantsDemo.entity.WateringStatus;
+import com.matchasoda.plantsDemo.rest.PlantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,11 +45,19 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public void deletePlantById(int plantId) {
+        if (!plantRepository.existsById(plantId)) {
+            throw new PlantNotFoundException(plantId);
+        }
         plantRepository.deleteById(plantId);
     }
 
     @Override
     public WateringLog getLogByPlant(int plantId) {
+
+        if (!plantRepository.existsById(plantId)) {
+            throw new PlantNotFoundException(plantId);
+        }
+
         Plant plant = plantRepository.getById(plantId);
         return plant.getWateringLog();
     }
@@ -60,7 +69,11 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public Plant waterPlant(int plantId, LocalDate date) {
-//        Plant plant = plantRepository.getById(plantId); //lazy loading - throws an error...
+
+        if (!plantRepository.existsById(plantId)) {
+            throw new PlantNotFoundException(plantId);
+        }
+//        Plant plant = plantRepository.getById(plantId); //lazy loading - throws an error
         Plant plant = plantRepository.findById(plantId).get(); //eager loading - gets all
         WateringLog wateringLog = plant.getWateringLog();
 
@@ -87,19 +100,11 @@ public class PlantServiceImpl implements PlantService {
         return plantsToWater;
     }
 
-    public boolean needsWatering(Plant plant) {
-//        LocalDate dateWatered = plant.getWateringLog().getDateWatered();
-//
-//        if (dateWatered == null) {
-//            return true;
-//        }
-//        int wateringFrequency = plant.getWateringFrequency();
-//
-//        LocalDate nextWateringDate = dateWatered.plusDays(wateringFrequency);
-
+    private boolean needsWatering(Plant plant) {
         return plant.getWateringLog().getWateringStatus() != WateringStatus.WATERED;
 
     }
+
 
 }
 

@@ -25,16 +25,13 @@ public class Plant {
     @Column(name="soil_mix")
     private String soilMix;
 
+    //prevents infinite json loop, in pair with @JsonManagedReference
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="watering_log_id")
-    private WateringLog wateringLog = new WateringLog(); //sets default value for wateringLog
+    private WateringLog wateringLog; //sets default value for wateringLog
                                                         //as a new wateringlog class
                                                         //which has watering status set as NOT_SET by default
-
-//    @OneToOne
-//    @JoinColumn(name ="health_log_id")
-//    private HealthLog healthLog;
 
     public Plant(){
     }
