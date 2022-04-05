@@ -18,7 +18,7 @@ public class PlantController {
     private PlantService plantService;
 
     @GetMapping()
-    public List<Plant> listAllPlants(){
+    public List<Plant> listAllPlants() {
         return plantService.listAllPlants();
     }
 
@@ -38,33 +38,41 @@ public class PlantController {
     }
 
     @PutMapping
-    public Plant updatePlant(@RequestBody Plant plant){
+    public Plant updatePlant(@RequestBody Plant plant) {
         plantService.savePlant(plant);
         return plant;
     }
 
     @PutMapping("water")
-    public Plant waterPlant(@RequestBody WateringRequest wateringRequest){
+    public Plant waterPlant(@RequestBody WateringRequest wateringRequest) {
         int plantId = wateringRequest.getPlantId();
         LocalDate wateredDate = wateringRequest.getDateWatered();
 
-        return plantService.waterPlant(plantId,wateredDate);
+        return plantService.waterPlant(plantId, wateredDate);
     }
 
     @PutMapping("waterToday/{plantId}")
-    public Plant waterPlant(@PathVariable int plantId){
+    public Plant waterPlant(@PathVariable int plantId) {
+
+        //sample request:
+        //{
+        //  plantId:11,
+        //  dateWatered: "2022-01-01"
+        //}
+
         Plant plant = plantService.findPlantById(plantId);
         return plantService.waterPlant(plantId);
     }
-//
+
+    //
     @DeleteMapping("/{plantId}")
-    public List<Plant> deletePlant(@PathVariable int plantId){
+    public List<Plant> deletePlant(@PathVariable int plantId) {
         plantService.deletePlantById(plantId);
         return plantService.listAllPlants();
     }
 
     @GetMapping("/toWater")
-    public List<Plant> plantsTowater(){
+    public List<Plant> plantsTowater() {
         return plantService.getPlantsToWater();
     }
 }
