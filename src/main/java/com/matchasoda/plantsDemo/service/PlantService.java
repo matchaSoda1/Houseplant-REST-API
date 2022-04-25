@@ -16,6 +16,8 @@ public interface PlantService {
 
     public void savePlant(Plant thePlant);
 
+    public void updatePlant(Plant thePlant);
+
     public void deletePlantById(int plantId);
 
     public WateringLog getLogByPlant(int plantId);

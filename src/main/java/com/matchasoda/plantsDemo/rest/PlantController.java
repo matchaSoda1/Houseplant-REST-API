@@ -39,7 +39,7 @@ public class PlantController {
 
     @PutMapping
     public Plant updatePlant(@RequestBody Plant plant) {
-        plantService.savePlant(plant);
+        plantService.updatePlant(plant);
         return plant;
     }
 
@@ -64,14 +64,13 @@ public class PlantController {
         return plantService.waterPlant(plantId);
     }
 
-    //
     @DeleteMapping("/{plantId}")
     public List<Plant> deletePlant(@PathVariable int plantId) {
         plantService.deletePlantById(plantId);
         return plantService.listAllPlants();
     }
 
-    @GetMapping("/toWater")
+    @GetMapping("/overdueWaterings")
     public List<Plant> plantsTowater() {
         return plantService.getPlantsToWater();
     }

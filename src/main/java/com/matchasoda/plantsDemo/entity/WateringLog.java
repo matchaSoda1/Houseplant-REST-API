@@ -25,8 +25,8 @@ public class WateringLog {
 
     //refers to the wateringLog property in the Plant class :)
     //so not anything in mysql!
-    @JsonBackReference //prevents infinite json loop, in pair with @JsonManagedReference
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "wateringLog")
+    @JsonBackReference //prevents infinite json loop that shows on postman, in pair with @JsonManagedReference
+    @OneToOne(mappedBy = "wateringLog")
     private Plant plant;
 
     public WateringLog(){

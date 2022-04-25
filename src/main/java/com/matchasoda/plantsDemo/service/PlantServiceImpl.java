@@ -2,6 +2,7 @@ package com.matchasoda.plantsDemo.service;
 
 import com.matchasoda.plantsDemo.dao.PlantRepository;
 import com.matchasoda.plantsDemo.entity.Plant;
+import com.matchasoda.plantsDemo.entity.PlantHandler;
 import com.matchasoda.plantsDemo.entity.WateringLog;
 import com.matchasoda.plantsDemo.entity.WateringStatus;
 import com.matchasoda.plantsDemo.rest.PlantNotFoundException;
@@ -35,11 +36,23 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public Plant findPlantById(int plantId) {
+        if (!plantRepository.existsById(plantId)) {
+            throw new PlantNotFoundException(plantId);
+        }
         return plantRepository.findById(plantId).get();
     }
 
     @Override
     public void savePlant(Plant thePlant) {
+        plantRepository.save(thePlant);
+    }
+    @Override
+    public void updatePlant(Plant thePlant) {
+        //assumes request does not include waterLog
+        Plant plant = findPlantById(thePlant.getId());
+        WateringLog wateringLog = plant.getWateringLog();
+        thePlant.setWateringLog(wateringLog);
+
         plantRepository.save(thePlant);
     }
 
@@ -58,7 +71,7 @@ public class PlantServiceImpl implements PlantService {
             throw new PlantNotFoundException(plantId);
         }
 
-        Plant plant = plantRepository.getById(plantId);
+        Plant plant = plantRepository.findById(plantId).get();
         return plant.getWateringLog();
     }
 
@@ -75,10 +88,12 @@ public class PlantServiceImpl implements PlantService {
         }
 //        Plant plant = plantRepository.getById(plantId); //lazy loading - throws an error
         Plant plant = plantRepository.findById(plantId).get(); //eager loading - gets all
-        WateringLog wateringLog = plant.getWateringLog();
 
+        WateringLog wateringLog = plant.getWateringLog();
         wateringLog.setDateWatered(date);
-        wateringLog.setWateringStatus(WateringStatus.WATERED);
+        WateringStatus newWateringStatus =
+                new PlantHandler().calculateWateringStatus(plant);
+        wateringLog.setWateringStatus(newWateringStatus);
 
         plantRepository.save(plant);
 
@@ -102,7 +117,6 @@ public class PlantServiceImpl implements PlantService {
 
     private boolean needsWatering(Plant plant) {
         return plant.getWateringLog().getWateringStatus() != WateringStatus.WATERED;
-
     }
 
 

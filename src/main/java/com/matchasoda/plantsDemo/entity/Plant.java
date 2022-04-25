@@ -1,8 +1,11 @@
 package com.matchasoda.plantsDemo.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import org.hibernate.annotations.CascadeType.*;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name="plants")
@@ -25,13 +28,11 @@ public class Plant {
     @Column(name="soil_mix")
     private String soilMix;
 
-    //prevents infinite json loop, in pair with @JsonManagedReference
+    //prevents infinite json loop that shows up on postman, paired with @JsonManagedReference
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="watering_log_id")
-    private WateringLog wateringLog; //sets default value for wateringLog
-                                                        //as a new wateringlog class
-                                                        //which has watering status set as NOT_SET by default
+    private WateringLog wateringLog;
 
     public Plant(){
     }

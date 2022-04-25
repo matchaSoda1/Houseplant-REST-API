@@ -21,15 +21,7 @@ public class PlantHandler {
         List<Plant> plantList = plantService.listAllPlants();
 
         for (Plant plant : plantList) {
-
-            LocalDate nextWateringDate = getNextWateringDate(plant);
-
-            if (nextWateringDate != null && nextWateringDate.isBefore(LocalDate.now())){
-                plant.getWateringLog().setWateringStatus(WateringStatus.OVERDUE);
-            } else if (nextWateringDate != null && nextWateringDate.isEqual(LocalDate.now())){
-                plant.getWateringLog().setWateringStatus(WateringStatus.WATER_TODAY);
-            }
-            plantService.savePlant(plant);
+            manageWateringStatus(plant);
         }
     }
 
@@ -41,5 +33,54 @@ public class PlantHandler {
         int wateringFrequency = plant.getWateringFrequency();
 
         return dateWatered.plus(Period.ofDays(wateringFrequency));
+    }
+
+//    public void manageWateringStatus(Plant plant){ //working!!
+//        LocalDate today = LocalDate.now();
+//        LocalDate dateWatered = plant.getWateringLog().getDateWatered();
+//
+//        if (dateWatered == null) {
+//            return;
+//        }
+//
+//        LocalDate nextWateringDate = getNextWateringDate(plant);
+//
+//        if (nextWateringDate.isBefore(today)){
+//            plant.getWateringLog().
+//                    setWateringStatus(WateringStatus.OVERDUE);
+//        } else if (nextWateringDate.isEqual(today)){
+//            plant.getWateringLog().
+//                    setWateringStatus(WateringStatus.WATER_TODAY);
+//        }
+//
+//        plantService.savePlant(plant);
+//
+//    }
+
+
+    public void manageWateringStatus(Plant plant){
+        WateringStatus wateringStatus = calculateWateringStatus(plant);
+        plant.getWateringLog().setWateringStatus(wateringStatus);
+        plantService.savePlant(plant);
+
+        //simplify this using below??? im scared it might not eager load the watering log :/
+    }
+
+    public WateringStatus calculateWateringStatus(Plant plant){
+        LocalDate today = LocalDate.now();
+        LocalDate dateWatered = plant.getWateringLog().getDateWatered();
+
+        if (dateWatered == null) {
+            return WateringStatus.NOT_SET;
+        }
+
+        LocalDate nextWateringDate = getNextWateringDate(plant);
+
+        if (nextWateringDate.isBefore(today)){
+            return WateringStatus.OVERDUE;
+        } else if (nextWateringDate.isEqual(today)){
+            return WateringStatus.WATER_TODAY;
+        }
+        return WateringStatus.WATERED;
     }
 }
