@@ -28,12 +28,12 @@ public class PlantController {
         plantService.savePlant(plant);
         return plant;
 
-        //sample request [using class variable names NOT mysql variable names]
+        //sample request [using Plant class variable names, not MySQL Plant table variable names]
         //    {
         //        "name" : "Pilea",
         //        "wateringFrequency" : 7,
         //        "preferredBrightness" : "indirect bright",
-        //        "soilMix" : "perlite, soil potting mix"
+        //        "soilMix" : "perlite, coco coir, soil potting mix"
         //    }
     }
 
@@ -45,6 +45,13 @@ public class PlantController {
 
     @PutMapping("water")
     public Plant waterPlant(@RequestBody WateringRequest wateringRequest) {
+
+        //sample request:
+        //{
+        //  plantId:11,
+        //  dateWatered: "2022-01-01"
+        //}
+
         int plantId = wateringRequest.getPlantId();
         LocalDate wateredDate = wateringRequest.getDateWatered();
 
@@ -53,13 +60,6 @@ public class PlantController {
 
     @PutMapping("waterToday/{plantId}")
     public Plant waterPlant(@PathVariable int plantId) {
-
-        //sample request:
-        //{
-        //  plantId:11,
-        //  dateWatered: "2022-01-01"
-        //}
-
         Plant plant = plantService.findPlantById(plantId);
         return plantService.waterPlant(plantId);
     }
@@ -70,8 +70,8 @@ public class PlantController {
         return plantService.listAllPlants();
     }
 
-    @GetMapping("/overdueWaterings")
-    public List<Plant> plantsTowater() {
-        return plantService.getPlantsToWater();
+    @GetMapping("/overdueWatering")
+    public List<Plant> getOverduePlants() {
+        return plantService.getOverduePlants();
     }
 }

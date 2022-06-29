@@ -26,5 +26,5 @@ public interface PlantService {
 
     public Plant waterPlant(int plantId);
 
-    public List<Plant> getPlantsToWater();
+    public List<Plant> getOverduePlants();
 }

@@ -28,7 +28,7 @@ public class Plant {
     @Column(name="soil_mix")
     private String soilMix;
 
-    //prevents infinite json loop that shows up on postman, paired with @JsonManagedReference
+    //prevents infinite json loop on postman, paired with @JsonManagedReference
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="watering_log_id")

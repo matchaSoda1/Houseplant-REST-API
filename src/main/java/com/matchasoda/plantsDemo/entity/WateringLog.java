@@ -23,8 +23,7 @@ public class WateringLog {
     @Column(name="watering_status")
     private WateringStatus wateringStatus = WateringStatus.NOT_SET;
 
-    //refers to the wateringLog property in the Plant class :)
-    //so not anything in mysql!
+    //refers to the wateringLog property in the Plant class, not the mysql table
     @JsonBackReference //prevents infinite json loop that shows on postman, in pair with @JsonManagedReference
     @OneToOne(mappedBy = "wateringLog")
     private Plant plant;

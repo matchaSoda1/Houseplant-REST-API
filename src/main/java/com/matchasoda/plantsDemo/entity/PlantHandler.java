@@ -25,45 +25,10 @@ public class PlantHandler {
         }
     }
 
-    public LocalDate getNextWateringDate (Plant plant){
-        LocalDate dateWatered = plant.getWateringLog().getDateWatered();
-        if (dateWatered == null) {
-            return null;
-        }
-        int wateringFrequency = plant.getWateringFrequency();
-
-        return dateWatered.plus(Period.ofDays(wateringFrequency));
-    }
-
-//    public void manageWateringStatus(Plant plant){ //working!!
-//        LocalDate today = LocalDate.now();
-//        LocalDate dateWatered = plant.getWateringLog().getDateWatered();
-//
-//        if (dateWatered == null) {
-//            return;
-//        }
-//
-//        LocalDate nextWateringDate = getNextWateringDate(plant);
-//
-//        if (nextWateringDate.isBefore(today)){
-//            plant.getWateringLog().
-//                    setWateringStatus(WateringStatus.OVERDUE);
-//        } else if (nextWateringDate.isEqual(today)){
-//            plant.getWateringLog().
-//                    setWateringStatus(WateringStatus.WATER_TODAY);
-//        }
-//
-//        plantService.savePlant(plant);
-//
-//    }
-
-
     public void manageWateringStatus(Plant plant){
         WateringStatus wateringStatus = calculateWateringStatus(plant);
         plant.getWateringLog().setWateringStatus(wateringStatus);
         plantService.savePlant(plant);
-
-        //simplify this using below??? im scared it might not eager load the watering log :/
     }
 
     public WateringStatus calculateWateringStatus(Plant plant){
@@ -82,5 +47,15 @@ public class PlantHandler {
             return WateringStatus.WATER_TODAY;
         }
         return WateringStatus.WATERED;
+    }
+
+    public LocalDate getNextWateringDate (Plant plant){
+        LocalDate dateWatered = plant.getWateringLog().getDateWatered();
+        if (dateWatered == null) {
+            return null;
+        }
+        int wateringFrequency = plant.getWateringFrequency();
+
+        return dateWatered.plus(Period.ofDays(wateringFrequency));
     }
 }

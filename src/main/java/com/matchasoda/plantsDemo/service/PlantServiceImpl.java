@@ -28,7 +28,6 @@ public class PlantServiceImpl implements PlantService {
         return plantRepository.findAll();
     }
 
-    //lazy loading! if you want the watering log use the eager loading :)
     @Override
     public Plant getPlantById(int plantId) {
         return plantRepository.getById(plantId);
@@ -83,11 +82,7 @@ public class PlantServiceImpl implements PlantService {
     @Override
     public Plant waterPlant(int plantId, LocalDate date) {
 
-        if (!plantRepository.existsById(plantId)) {
-            throw new PlantNotFoundException(plantId);
-        }
-//        Plant plant = plantRepository.getById(plantId); //lazy loading - throws an error
-        Plant plant = plantRepository.findById(plantId).get(); //eager loading - gets all
+        Plant plant = findPlantById(plantId);
 
         WateringLog wateringLog = plant.getWateringLog();
         wateringLog.setDateWatered(date);
@@ -101,7 +96,7 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public List<Plant> getPlantsToWater() {
+    public List<Plant> getOverduePlants() {
         List<Plant> plantsToWater = plantRepository.findAll();
 
         Iterator<Plant> iterator = plantsToWater.iterator();
