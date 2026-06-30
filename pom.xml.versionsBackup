@@ -6,11 +6,11 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.1</version>
-		<relativePath/>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.matchasoda</groupId>
 	<artifactId>houseplantWatch</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>houseplantWatch</name>
 	<description>Spring Boot houseplant maintenance project</description>
 	<properties>
@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>org.awaitility</groupId>
 			<artifactId>awaitility</artifactId>
-			<version>4.3.0</version>
+			<version>3.0.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
