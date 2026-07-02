@@ -1,6 +1,7 @@
 ## Description
 
 A Spring Boot REST API project to solidify concepts learned from a Udemy Spring Boot & Hibernate course through practical application. Helps keep my plants happy :-)
+
 Supports CRUD operations, validation, exception handling and relational persistence using Hibernate ORM and MySQL. Includes water plant and overdue watering plant endpoints. 
 
 
