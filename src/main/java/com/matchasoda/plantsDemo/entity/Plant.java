@@ -1,11 +1,7 @@
 package com.matchasoda.plantsDemo.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.Cascade;
-
-import javax.persistence.*;
-import org.hibernate.annotations.CascadeType.*;
-import org.hibernate.annotations.Cascade;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="plants")

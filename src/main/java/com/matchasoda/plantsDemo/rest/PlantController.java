@@ -1,9 +1,9 @@
 package com.matchasoda.plantsDemo.rest;
 
+import com.matchasoda.plantsDemo.service.PlantService;
 import com.matchasoda.plantsDemo.entity.Plant;
 import com.matchasoda.plantsDemo.entity.WateringLog;
 import com.matchasoda.plantsDemo.entity.WateringRequest;
-import com.matchasoda.plantsDemo.service.PlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +27,6 @@ public class PlantController {
         plant.setWateringLog(new WateringLog());
         plantService.savePlant(plant);
         return plant;
-
-        //sample request [using Plant class variable names, not MySQL Plant table variable names]
-        //    {
-        //        "name" : "Pilea",
-        //        "wateringFrequency" : 7,
-        //        "preferredBrightness" : "indirect bright",
-        //        "soilMix" : "perlite, coco coir, soil potting mix"
-        //    }
     }
 
     @PutMapping
@@ -46,12 +38,6 @@ public class PlantController {
     @PutMapping("water")
     public Plant waterPlant(@RequestBody WateringRequest wateringRequest) {
 
-        //sample request:
-        //{
-        //  plantId:11,
-        //  dateWatered: "2022-01-01"
-        //}
-
         int plantId = wateringRequest.getPlantId();
         LocalDate wateredDate = wateringRequest.getDateWatered();
 
@@ -60,7 +46,6 @@ public class PlantController {
 
     @PutMapping("waterToday/{plantId}")
     public Plant waterPlant(@PathVariable int plantId) {
-        Plant plant = plantService.findPlantById(plantId);
         return plantService.waterPlant(plantId);
     }
 

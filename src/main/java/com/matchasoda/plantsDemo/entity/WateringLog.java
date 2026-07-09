@@ -1,12 +1,9 @@
 package com.matchasoda.plantsDemo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name="watering_log")
@@ -28,7 +25,7 @@ public class WateringLog {
     @OneToOne(mappedBy = "wateringLog")
     private Plant plant;
 
-    public WateringLog(){
+    public WateringLog() {
     }
 
     public WateringLog(LocalDate dateWatered){
