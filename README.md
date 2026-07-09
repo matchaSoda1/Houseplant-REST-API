@@ -1,9 +1,10 @@
 ## Description
 
-🪴A houseplant Spring Boot REST API project to solidify concepts learned from a Udemy Spring Boot & Hibernate course through practical application - helps to keep my plants happy :-)
+🪴A houseplant tracking Spring Boot REST API & JPA/Hibernate project. Add, update, water, delete plants, check which plants are due or overdue for watering using various API endpoints. Includes automatic update of plant watering status daily.
+
+Made to solidify concepts learned from a Udemy Spring Boot & Hibernate course through practical application.
 
 Supports CRUD operations, validation, exception handling and relational persistence using Hibernate ORM and MySQL. Includes water plant and overdue watering plant endpoints. 
-
 
 ## Sample Requests 
 
