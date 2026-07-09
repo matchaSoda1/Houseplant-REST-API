@@ -86,9 +86,9 @@ public class PlantServiceImpl implements PlantService {
 
         WateringLog wateringLog = plant.getWateringLog();
         wateringLog.setDateWatered(date);
-        WateringStatus newWateringStatus =
+        WateringStatus updatedWateringStatus =
                 new PlantHandler().calculateWateringStatus(plant);
-        wateringLog.setWateringStatus(newWateringStatus);
+        wateringLog.setWateringStatus(updatedWateringStatus);
 
         plantRepository.save(plant);
 
@@ -103,17 +103,15 @@ public class PlantServiceImpl implements PlantService {
 
         while (iterator.hasNext()) {
             Plant plant = iterator.next();
-            if (!needsWatering(plant)) {
+            if (isWatered(plant)) {
                 iterator.remove();
             }
         }
         return plantsToWater;
     }
 
-    private boolean needsWatering(Plant plant) {
-        return plant.getWateringLog().getWateringStatus() != WateringStatus.WATERED;
+    private boolean isWatered(Plant plant) {
+        return plant.getWateringLog().getWateringStatus() == WateringStatus.WATERED;
     }
-
-
 }
 

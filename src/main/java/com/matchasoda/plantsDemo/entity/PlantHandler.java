@@ -21,24 +21,20 @@ public class PlantHandler {
         List<Plant> plantList = plantService.listAllPlants();
 
         for (Plant plant : plantList) {
-            manageWateringStatus(plant);
+            WateringStatus newWateringStatus = calculateWateringStatus(plant);
+            plant.getWateringLog().setWateringStatus(newWateringStatus);
+            plantService.savePlant(plant);
         }
     }
 
-    public void manageWateringStatus(Plant plant){
-        WateringStatus wateringStatus = calculateWateringStatus(plant);
-        plant.getWateringLog().setWateringStatus(wateringStatus);
-        plantService.savePlant(plant);
-    }
-
     public WateringStatus calculateWateringStatus(Plant plant){
-        LocalDate today = LocalDate.now();
         LocalDate dateWatered = plant.getWateringLog().getDateWatered();
 
         if (dateWatered == null) {
             return WateringStatus.NOT_SET;
         }
 
+        LocalDate today = LocalDate.now();
         LocalDate nextWateringDate = getNextWateringDate(plant);
 
         if (nextWateringDate.isBefore(today)){
@@ -51,9 +47,6 @@ public class PlantHandler {
 
     public LocalDate getNextWateringDate (Plant plant){
         LocalDate dateWatered = plant.getWateringLog().getDateWatered();
-        if (dateWatered == null) {
-            return null;
-        }
         int wateringFrequency = plant.getWateringFrequency();
 
         return dateWatered.plus(Period.ofDays(wateringFrequency));
