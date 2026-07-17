@@ -1,21 +1,28 @@
 package com.matchasoda.plantsDemo.rest;
 
-import com.matchasoda.plantsDemo.service.PlantService;
 import com.matchasoda.plantsDemo.entity.Plant;
-import com.matchasoda.plantsDemo.entity.WateringLog;
 import com.matchasoda.plantsDemo.entity.WateringRequest;
+import com.matchasoda.plantsDemo.service.PlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/plants")
 public class PlantController {
 
-    @Autowired
     private PlantService plantService;
+    private JsonMapper jsonMapper;
+
+    @Autowired
+    public PlantController(PlantService plantService, JsonMapper jsonMapper) {
+        this.plantService = plantService;
+        this.jsonMapper = jsonMapper;
+    }
 
     @GetMapping()
     public List<Plant> listAllPlants() {
@@ -24,18 +31,33 @@ public class PlantController {
 
     @PostMapping
     public Plant addPlant(@RequestBody Plant plant) {
-        plant.setWateringLog(new WateringLog());
         plantService.savePlant(plant);
         return plant;
     }
 
-    @PutMapping
-    public Plant updatePlant(@RequestBody Plant plant) {
-        plantService.updatePlant(plant);
-        return plant;
+    @PatchMapping("/{plantId}")
+    public Plant updatePlant(@PathVariable int plantId, @RequestBody Map<String, Object> patchPayload) {
+        Plant retrievedPlant = plantService.findPlantById(plantId);
+
+        if (retrievedPlant == null) {
+            throw new RuntimeException("Plant with id" + plantId + " not found.");
+        }
+
+        if (patchPayload.containsKey("id")) {
+            throw new RuntimeException(
+                    "Cannot modify plant id. Remove 'id' from request body."
+            );
+        }
+
+        //Creates new plant object with updates applied
+        Plant patchedPlant = jsonMapper.updateValue(retrievedPlant, patchPayload);
+
+        plantService.updatePlant(patchedPlant);
+
+        return patchedPlant;
     }
 
-    @PutMapping("water")
+    @PatchMapping("water")
     public Plant waterPlant(@RequestBody WateringRequest wateringRequest) {
 
         int plantId = wateringRequest.getPlantId();
@@ -44,7 +66,7 @@ public class PlantController {
         return plantService.waterPlant(plantId, wateredDate);
     }
 
-    @PutMapping("waterToday/{plantId}")
+    @PatchMapping("water/{plantId}")
     public Plant waterPlant(@PathVariable int plantId) {
         return plantService.waterPlant(plantId);
     }

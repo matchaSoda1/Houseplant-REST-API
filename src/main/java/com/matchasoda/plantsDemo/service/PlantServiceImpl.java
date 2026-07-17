@@ -29,11 +29,6 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public Plant getPlantById(int plantId) {
-        return plantRepository.getById(plantId);
-    }
-
-    @Override
     public Plant findPlantById(int plantId) {
         if (!plantRepository.existsById(plantId)) {
             throw new PlantNotFoundException(plantId);
@@ -42,12 +37,13 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public void savePlant(Plant thePlant) {
-        plantRepository.save(thePlant);
+    public Plant savePlant(Plant plant) {
+        plant.setWateringLog(new WateringLog());
+        return plantRepository.save(plant);
     }
+
     @Override
     public void updatePlant(Plant thePlant) {
-        //assumes request does not include waterLog
         Plant plant = findPlantById(thePlant.getId());
         WateringLog wateringLog = plant.getWateringLog();
         thePlant.setWateringLog(wateringLog);
@@ -64,17 +60,6 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public WateringLog getLogByPlant(int plantId) {
-
-        if (!plantRepository.existsById(plantId)) {
-            throw new PlantNotFoundException(plantId);
-        }
-
-        Plant plant = plantRepository.findById(plantId).get();
-        return plant.getWateringLog();
-    }
-
-    @Override
     public Plant waterPlant(int plantId) {
         return waterPlant(plantId, LocalDate.now());
     }
@@ -86,9 +71,7 @@ public class PlantServiceImpl implements PlantService {
 
         WateringLog wateringLog = plant.getWateringLog();
         wateringLog.setDateWatered(date);
-        WateringStatus updatedWateringStatus =
-                new PlantHandler().calculateWateringStatus(plant);
-        wateringLog.setWateringStatus(updatedWateringStatus);
+        wateringLog.setWateringStatus(new PlantHandler().calculateWateringStatus(plant));
 
         plantRepository.save(plant);
 
