@@ -2,16 +2,18 @@ package com.matchasoda.plantsDemo.service;
 
 import com.matchasoda.plantsDemo.dao.PlantRepository;
 import com.matchasoda.plantsDemo.entity.Plant;
-import com.matchasoda.plantsDemo.entity.PlantHandler;
 import com.matchasoda.plantsDemo.entity.WateringLog;
 import com.matchasoda.plantsDemo.entity.WateringStatus;
 import com.matchasoda.plantsDemo.rest.PlantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class PlantServiceImpl implements PlantService {
@@ -38,7 +40,10 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public Plant savePlant(Plant plant) {
-        plant.setWateringLog(new WateringLog());
+        if (plant.getWateringLog() == null) {
+            plant.setWateringLog(new WateringLog());
+        }
+        plant.getWateringLog().setWateringStatus(calculateWateringStatus(plant));
         return plantRepository.save(plant);
     }
 
@@ -71,11 +76,22 @@ public class PlantServiceImpl implements PlantService {
 
         WateringLog wateringLog = plant.getWateringLog();
         wateringLog.setDateWatered(date);
-        wateringLog.setWateringStatus(new PlantHandler().calculateWateringStatus(plant));
+        wateringLog.setWateringStatus(calculateWateringStatus(plant));
 
         plantRepository.save(plant);
 
         return plant;
+    }
+
+    @Scheduled(fixedRate = 1, timeUnit = TimeUnit.DAYS)
+    public void autoUpdateWateringStatus() {
+        List<Plant> plantList = listAllPlants();
+
+        for (Plant plant : plantList) {
+            WateringStatus newWateringStatus = calculateWateringStatus(plant);
+            plant.getWateringLog().setWateringStatus(newWateringStatus);
+            savePlant(plant);
+        }
     }
 
     @Override
@@ -96,5 +112,31 @@ public class PlantServiceImpl implements PlantService {
     private boolean isWatered(Plant plant) {
         return plant.getWateringLog().getWateringStatus() == WateringStatus.WATERED;
     }
+
+    public WateringStatus calculateWateringStatus(Plant plant){
+        LocalDate dateWatered = plant.getWateringLog().getDateWatered();
+
+        if (dateWatered == null) {
+            return WateringStatus.NOT_SET;
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalDate nextWateringDate = getNextWateringDate(plant);
+
+        if (nextWateringDate.isBefore(today)){
+            return WateringStatus.OVERDUE;
+        } else if (nextWateringDate.isEqual(today)){
+            return WateringStatus.WATER_TODAY;
+        }
+        return WateringStatus.WATERED;
+    }
+
+    public LocalDate getNextWateringDate (Plant plant){
+        LocalDate dateWatered = plant.getWateringLog().getDateWatered();
+        int wateringFrequency = plant.getWateringFrequency();
+
+        return dateWatered.plus(Period.ofDays(wateringFrequency));
+    }
+
 }
 
