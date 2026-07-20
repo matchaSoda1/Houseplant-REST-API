@@ -9,18 +9,26 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class PlantExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<PlantErrorResponse> handleNotFoundException(PlantNotFoundException e) {
-        PlantErrorResponse errorResponse = new PlantErrorResponse(
-                                                    HttpStatus.NOT_FOUND.value(),
-                                                    e.getMessage());
-        return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+    public ResponseEntity<PlantErrorResponse> handleNotFoundException(PlantNotFoundException exception) {
+        exception.printStackTrace();
+
+        PlantErrorResponse error = new PlantErrorResponse();
+
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setErrorMessage(exception.getMessage());
+
+        return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
-    public ResponseEntity<PlantErrorResponse> handleException(Exception e) {
-        PlantErrorResponse errorResponse = new PlantErrorResponse(
-                                                    HttpStatus.BAD_REQUEST.value(),
-                                                    e.getMessage());
-        return new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST);
+    public ResponseEntity<PlantErrorResponse> handleException(Exception exception) {
+        exception.printStackTrace();
+
+        PlantErrorResponse error = new PlantErrorResponse();
+
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setErrorMessage(exception.getMessage());
+
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
     }
 }

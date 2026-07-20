@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="plants")
+@Table(name="plant")
 public class Plant {
 
     @Id
@@ -34,7 +34,7 @@ public class Plant {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -42,7 +42,7 @@ public class Plant {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -50,7 +50,7 @@ public class Plant {
     }
 
     public int getWateringFrequency() {
-        return wateringFrequency;
+        return this.wateringFrequency;
     }
 
     public void setWateringFrequency(int wateringFrequency) {
@@ -58,7 +58,7 @@ public class Plant {
     }
 
     public String getSoilMix() {
-        return soilMix;
+        return this.soilMix;
     }
 
     public void setSoilMix(String soilMix) {
@@ -66,7 +66,7 @@ public class Plant {
     }
 
     public String getPreferredBrightness() {
-        return preferredBrightness;
+        return this.preferredBrightness;
     }
 
     public void setPreferredBrightness(String preferredBrightness) {
@@ -74,7 +74,7 @@ public class Plant {
     }
 
     public WateringLog getWateringLog() {
-        return wateringLog;
+        return this.wateringLog;
     }
 
     public void setWateringLog(WateringLog wateringLog) {

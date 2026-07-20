@@ -2,30 +2,31 @@ package com.matchasoda.plantsDemo.rest;
 
 public class PlantErrorResponse {
 
-    private int id;
-    private String message;
+    private int status;
+    private String errorMessage;
 
-    public PlantErrorResponse(){
+    public PlantErrorResponse() {
 
     }
-    public PlantErrorResponse(int id, String message) {
-        this.id = id;
-        this.message = message;
+
+    public PlantErrorResponse(int status, String errorMessage) {
+        this.status = status;
+        this.errorMessage = errorMessage;
     }
 
-    public int getId() {
-        return id;
+    public int getStatus() {
+        return status;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public String getMessage() {
-        return message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

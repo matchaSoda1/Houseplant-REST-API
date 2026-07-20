@@ -39,17 +39,12 @@ public class PlantController {
     public Plant updatePlant(@PathVariable int plantId, @RequestBody Map<String, Object> patchPayload) {
         Plant retrievedPlant = plantService.findPlantById(plantId);
 
-        if (retrievedPlant == null) {
-            throw new RuntimeException("Plant with id" + plantId + " not found.");
-        }
-
         if (patchPayload.containsKey("id")) {
             throw new RuntimeException(
                     "Cannot modify plant id. Remove 'id' from request body."
             );
         }
 
-        //Creates new plant object with updates applied
         Plant patchedPlant = jsonMapper.updateValue(retrievedPlant, patchPayload);
 
         plantService.updatePlant(patchedPlant);
@@ -77,7 +72,7 @@ public class PlantController {
         return plantService.listAllPlants();
     }
 
-    @GetMapping("/overdueWatering")
+    @GetMapping("/water/overdue")
     public List<Plant> getOverduePlants() {
         return plantService.getOverduePlants();
     }
