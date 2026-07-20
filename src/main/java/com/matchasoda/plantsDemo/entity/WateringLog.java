@@ -1,6 +1,7 @@
 package com.matchasoda.plantsDemo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -14,9 +15,11 @@ public class WateringLog {
     @Column(name="id")
     private int id;
 
-    @Column(name="date_watered")
+    @Column(name="watering_date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateWatered;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="watering_status")
     private WateringStatus wateringStatus = WateringStatus.NOT_SET;
 
@@ -33,7 +36,7 @@ public class WateringLog {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -41,23 +44,15 @@ public class WateringLog {
     }
 
     public LocalDate getDateWatered() {
-        return dateWatered;
+        return this.dateWatered;
     }
 
     public void setDateWatered(LocalDate dateWatered) {
         this.dateWatered = dateWatered;
     }
 
-    public Plant getPlant() {
-        return plant;
-    }
-
-    public void setPlant(Plant plant) {
-        this.plant = plant;
-    }
-
     public WateringStatus getWateringStatus() {
-        return wateringStatus;
+        return this.wateringStatus;
     }
 
     public void setWateringStatus(WateringStatus status) {
