@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.matchasoda</groupId>
-	<artifactId>houseplantWatch</artifactId>
+	<artifactId>plantTracker</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-	<name>houseplantWatch</name>
+	<name>plantTracker</name>
 	<description/>
 	<url/>
 	<licenses>

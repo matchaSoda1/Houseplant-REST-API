@@ -1,4 +1,4 @@
-package com.matchasoda.plantsDemo.entity;
+package com.matchasoda.plantTracker.entity;
 
 import java.time.LocalDate;
 

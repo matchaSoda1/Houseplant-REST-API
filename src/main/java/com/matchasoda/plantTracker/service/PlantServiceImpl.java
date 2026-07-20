@@ -1,10 +1,10 @@
-package com.matchasoda.plantsDemo.service;
+package com.matchasoda.plantTracker.service;
 
-import com.matchasoda.plantsDemo.dao.PlantRepository;
-import com.matchasoda.plantsDemo.entity.Plant;
-import com.matchasoda.plantsDemo.entity.WateringLog;
-import com.matchasoda.plantsDemo.entity.WateringStatus;
-import com.matchasoda.plantsDemo.rest.PlantNotFoundException;
+import com.matchasoda.plantTracker.dao.PlantRepository;
+import com.matchasoda.plantTracker.entity.Plant;
+import com.matchasoda.plantTracker.entity.WateringLog;
+import com.matchasoda.plantTracker.entity.WateringStatus;
+import com.matchasoda.plantTracker.rest.PlantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

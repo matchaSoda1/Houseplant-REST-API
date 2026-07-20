@@ -1,4 +1,4 @@
-package com.matchasoda.plantsDemo.rest;
+package com.matchasoda.plantTracker.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,8 @@
-package com.matchasoda.plantsDemo.rest;
+package com.matchasoda.plantTracker.rest;
 
-import com.matchasoda.plantsDemo.entity.Plant;
-import com.matchasoda.plantsDemo.entity.WateringRequest;
-import com.matchasoda.plantsDemo.service.PlantService;
+import com.matchasoda.plantTracker.entity.Plant;
+import com.matchasoda.plantTracker.entity.WateringRequest;
+import com.matchasoda.plantTracker.service.PlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.json.JsonMapper;

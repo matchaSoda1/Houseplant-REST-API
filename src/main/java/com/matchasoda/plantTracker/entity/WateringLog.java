@@ -1,4 +1,4 @@
-package com.matchasoda.plantsDemo.entity;
+package com.matchasoda.plantTracker.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;

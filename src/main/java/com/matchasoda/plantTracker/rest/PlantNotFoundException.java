@@ -1,4 +1,4 @@
-package com.matchasoda.plantsDemo.rest;
+package com.matchasoda.plantTracker.rest;
 
 public class PlantNotFoundException extends RuntimeException{
 

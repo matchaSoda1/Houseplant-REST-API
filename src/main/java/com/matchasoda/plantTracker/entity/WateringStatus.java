@@ -1,4 +1,4 @@
-package com.matchasoda.plantsDemo.entity;
+package com.matchasoda.plantTracker.entity;
 
 public enum WateringStatus {
     NOT_SET,

@@ -1,6 +1,6 @@
-package com.matchasoda.plantsDemo.service;
+package com.matchasoda.plantTracker.service;
 
-import com.matchasoda.plantsDemo.entity.Plant;
+import com.matchasoda.plantTracker.entity.Plant;
 
 import java.time.LocalDate;
 import java.util.List;
