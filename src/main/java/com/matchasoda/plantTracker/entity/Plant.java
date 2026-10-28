@@ -2,6 +2,7 @@ package com.matchasoda.plantTracker.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name="plant")
@@ -12,9 +13,13 @@ public class Plant {
     @Column(name="id")
     private int id;
 
+    @NotNull(message="is required")
+    @Size(min=3,max=50,message = "Plant name must be between 3 and 50 characters")
     @Column(name="name")
     private String name;
 
+    @Min(value = 1, message = "Must be 1 or greater")
+    @Max(value = 365, message = "Must be no more than 365")
     @Column(name="watering_frequency")
     private int wateringFrequency;
 
@@ -31,6 +36,22 @@ public class Plant {
     private WateringLog wateringLog;
 
     public Plant(){
+    }
+
+    public Plant(String name, int wateringFrequency, String preferredBrightness, String soilMix) {
+        this.name = name;
+        this.wateringFrequency = wateringFrequency;
+        this.preferredBrightness = preferredBrightness;
+        this.soilMix = soilMix;
+    }
+
+    public Plant(int id, String name, int wateringFrequency, String preferredBrightness, String soilMix, WateringLog wateringLog) {
+        this.id = id;
+        this.name = name;
+        this.wateringFrequency = wateringFrequency;
+        this.preferredBrightness = preferredBrightness;
+        this.soilMix = soilMix;
+        this.wateringLog = wateringLog;
     }
 
     public int getId() {

@@ -3,6 +3,7 @@ package com.matchasoda.plantTracker.rest;
 import com.matchasoda.plantTracker.entity.Plant;
 import com.matchasoda.plantTracker.entity.WateringRequest;
 import com.matchasoda.plantTracker.service.PlantService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.json.JsonMapper;
@@ -30,7 +31,7 @@ public class PlantController {
     }
 
     @PostMapping
-    public Plant addPlant(@RequestBody Plant plant) {
+    public Plant addPlant(@Valid @RequestBody Plant plant) {
         plantService.savePlant(plant);
         return plant;
     }
