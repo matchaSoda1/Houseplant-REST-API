@@ -33,6 +33,22 @@ public class Plant {
     public Plant(){
     }
 
+    public Plant(String name, int wateringFrequency, String preferredBrightness, String soilMix) {
+        this.name = name;
+        this.wateringFrequency = wateringFrequency;
+        this.preferredBrightness = preferredBrightness;
+        this.soilMix = soilMix;
+    }
+
+    public Plant(int id, String name, int wateringFrequency, String preferredBrightness, String soilMix, WateringLog wateringLog) {
+        this.id = id;
+        this.name = name;
+        this.wateringFrequency = wateringFrequency;
+        this.preferredBrightness = preferredBrightness;
+        this.soilMix = soilMix;
+        this.wateringLog = wateringLog;
+    }
+
     public int getId() {
         return this.id;
     }
