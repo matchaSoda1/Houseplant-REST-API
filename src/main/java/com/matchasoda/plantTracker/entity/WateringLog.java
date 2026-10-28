@@ -35,6 +35,13 @@ public class WateringLog {
         this.dateWatered = dateWatered;
     }
 
+    public WateringLog(int id, LocalDate dateWatered, WateringStatus wateringStatus, Plant plant) {
+        this.id = id;
+        this.dateWatered = dateWatered;
+        this.wateringStatus = wateringStatus;
+        this.plant = plant;
+    }
+
     public int getId() {
         return this.id;
     }
